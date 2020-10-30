@@ -1,0 +1,914 @@
+swagger: "2.0"
+info:
+  description: seflink-website-api
+  version: 1.0.0
+  title: Seflink
+host: xxx.com
+basePath: /api/v1
+schemes:
+  - https
+  - http
+
+tags:
+  - name: client
+    description: client api
+  - name: terminal
+    description: terminal api
+  - name: admin
+    description: admin api
+
+  - name: user
+    description: user api
+
+  - name: common
+    description: common api
+
+  # - name: bindDomain
+  #   description: operation of bind domain
+  # - name: admin
+  #   description: admin api
+  # - name: admin
+  #   description: admin api
+
+paths:
+  /client/newdomain:
+    post:
+      tags:
+        - client
+      summary: client bind a originUrl to cdnUrl
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - bindName
+              - originUrl
+              - cdnUrl
+            properties:
+              bindName:
+                type: string
+              originUrl:
+                type: string
+                format: url
+              cdnUrl:
+                type: string
+                format: url
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+              data:
+                type: array
+                description: the info of new created bind domain
+                items:
+                  $ref: '#/definitions/BindDomainInfo'
+              msg:
+                type: string
+
+  /client/modifydomainstate:
+    post:
+      tags:
+        - client
+      summary: modify binddomainstate to active or stop the cdnurl
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          schema:
+            required:
+              - id
+              - state
+              - bindName
+            properties:
+              id:
+                type: integer
+              state:
+                type: boolean
+              bindName:
+                type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "binddomain id not exist"
+
+  /client/setactiveregion:
+    post:
+      tags:
+        - client
+      summary: modify binddomainstate to active or stop the cdnurl
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          schema:
+            required:
+              - id
+              - activeregion
+              - unactiveregion
+              - bindName
+            properties:
+              id:
+                type: integer
+              activeregion:
+                type: array
+                items:
+                  type: string
+              unactiveregion:
+                type: array
+                items:
+                  type: string
+              bindName:
+                type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "binddomain id not exist"
+
+  /client/deletedomain:
+    post:
+      tags:
+        - client
+      summary: delete binded BindDomainInfo
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          schema:
+            required:
+              - id
+              - bindName
+            properties:
+              id:
+                type: integer
+                description:  the id of binded domain
+              bindName:
+                type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "binddomain id not exist"
+
+  /client/getdomains:
+    get:
+      tags:
+        - client
+      summary: query all the binded domain info
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+              data:
+                type: array
+                description: the info of all binded domains belong to user
+                items:
+                  $ref: '#/definitions/BindDomainInfo'
+              msg:
+                type: string
+
+  /client/traffic:
+    post:
+      tags:
+        - client
+      summary: query traffic records
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - startTime
+              - endTime
+            properties:
+              startTime:
+                type: integer
+                format: timestamp
+                example: 123456
+              endTime:
+                type: integer
+                format: timestamp
+                example: 2234234
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: array
+                description: user's recharge record
+                items:
+                  $ref: '#/definitions/Traffic'
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "user not exist"
+
+
+  /client/getdepositrecord:
+    post:
+      tags:
+        - client
+      summary: query all deposit records
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - startTime
+              - endTime
+            properties:
+              startTime:
+                type: integer
+                format: timestamp
+                example: 1599112424783
+              endTime:
+                type: integer
+                format: timestamp
+                example: 1599113424783
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: array
+                description: user's recharge record
+                items:
+                  $ref: '#/definitions/ClientRechargeRecord'
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "user not exist"
+
+  /client/depositaddr:
+    get:
+      tags:
+        - client
+      summary: get deposit address
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: integer
+                description: 0 means success, other number means fail
+              data:
+                type: object
+                description: deposit address
+                items:
+                  $ref: '#/definitions/DepositAddress'
+
+  /client/getbalance:
+    get:
+      tags:
+        - client
+      summary: get balance
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: integer
+                description: 0 means success, other number means fail
+              data:
+                type: integer
+
+  /terminal/getmachineinfo:
+    post:
+      tags:
+        - terminal
+      summary: query all the machine info
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - limit
+              - offset
+            properties:
+              limit:
+                type: integer
+              offset:
+                type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: object
+                description: machine state
+                properties:
+                  total:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/definitions/MachineState'
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "user not exist"
+
+  /terminal/profit:
+    post:
+      tags:
+        - terminal
+      summary: get total profit
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          type: "string"
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - startTime
+              - endTime
+            properties:
+              startTime:
+                type: integer
+              endTime:
+                type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: object
+                description: terminal profit
+                items:
+                  $ref: '#/definitions/Profit'
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "user not exist"
+
+
+  #  /terminal/modifymachinestate:
+  #    post:
+  #      tags:
+  #        - terminal
+  #      summary: modify machine to active or stop
+  #      parameters:
+  #        - name: "Authorization"
+  #          in: "header"
+  #          required: true
+  #          type: "string"
+  #        - name: body
+  #          in: body
+  #          schema:
+  #            required:
+  #              - id
+  #              - state
+  #            properties:
+  #              id:
+  #                type: integer
+  #              state:
+  #                type: boolean
+  #      responses:
+  #        200:
+  #          description: OK
+  #          schema:
+  #            required:
+  #              - status
+  #            properties:
+  #              status:
+  #                type: number
+  #                description: 0 means success, other number means fail
+  #              msg:
+  #                type: string
+  #                description: error reason, required if status != 0
+  #                example: "machine id not exist"
+
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: register from website
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - username
+              - email
+              - phonecode
+              - phonenum
+              - password
+              - usertype
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              phonecode:
+                type: string
+              phonenum:
+                type: string
+              password:
+                type: string
+              usertype:
+                type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            required:
+              - status
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: string
+                description: token string
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "username already exist"
+
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: register from website
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            required:
+              - user
+              - password
+              - type
+            properties:
+              user:
+                type: string
+              password:
+                type: string
+              type:
+                type: string
+                description: a string define login type 'username | email | phone'
+
+      responses:
+        "200":
+          description: OK
+          schema:
+            required:
+              - status
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: string
+                description: token string
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "username already exist"
+
+  /common/regionprice:
+    get:
+      tags:
+        - common
+      summary: get region and region price
+      responses:
+        "200":
+          description: OK
+          schema:
+            required:
+              - status
+              - data
+            properties:
+              status:
+                type: number
+                description: 0 means success, other number means fail
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/RegionPrice'
+                description: token string
+              msg:
+                type: string
+                description: error reason, required if status != 0
+                example: "username already exist"
+
+
+definitions:
+  RegionPrice:
+    type: object
+    required:
+      - region
+      - price
+      - mask
+    properties:
+      region:
+        type: string
+      price:
+        type: number
+        example: 0.02
+      mask:
+        type: integer
+
+  ClientRechargeRecord:
+    type: object
+    required:
+      - id
+      - date
+      - amount
+      - payment_method
+    properties:
+      id:
+        type: integer
+      date:
+        type: integer
+        format: timestamp
+        example: 1599112424783
+      amount:
+        type: number
+        example: 200.00
+      payment_method:
+        type: string
+        example: alipay
+
+  MachineState:
+    type: object
+    required:
+      - id
+      - machine_mac
+      - user_id
+      - machine_ip
+      - machine_geo_x
+      - machine_geo_y
+      - machine_geo_name
+      - machine_total_disk_mb
+      - machine_free_disk_mb
+      - machine_used_disk_mb
+      - machine_available_dist
+      - machine_total_memory
+      - machine_free_memory
+      - machine_used_memory
+      - machine_speed_mb
+      - machine_status
+      - machine_created
+    properties:
+      id:
+        type: integer
+      machine_mac:
+        type: string
+      user_id:
+        type: integer
+      machine_ip:
+        type: string
+        format: ip
+      machine_geo_x:
+        type: number
+      machine_geo_y:
+        type: number
+      machine_geo_name:
+        type: string
+      machine_total_disk_mb:
+        type: number
+      machine_free_disk_mb:
+        type: number
+      machine_used_disk_mb:
+        type: number
+      machine_available_disk:
+        type: number
+      machine_total_memory:
+        type: number
+      machine_free_memory:
+        type: number
+      machine_used_memory:
+        type: number
+      machine_speed_mb:
+        type: number
+      machine_status:
+        type: string
+        description: UP | ERROR | STOP
+      machine_created:
+        type: number
+        format: timestamp
+
+  AccountToken:
+    type: object
+    required:
+      - token
+    properties:
+      token:
+        type: string
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZW51bSI6IjEzMTIyOTIxOTk1IiwiaWQiOjEsImF1dGhvcml0eSI6WyJ1c2VyIl0sImlhdCI6MTU5OTIyMDE5OCwiZXhwIjoxNjMwNzU2MTk4fQ.ZimRyLvH1Vm4U45y7uIffw0jp9PnNSRNla2Ft4VQj0k
+
+  BindDomainInfo:
+    type: object
+    required:
+      - id
+      - bindname
+      - userid
+      - originurl
+      - active_region
+      - cdnurl
+      - state
+    properties:
+      id:
+        type: integer
+      bindname:
+        type: string
+      userid:
+        type: number
+      originurl:
+        type: string
+        format: url
+      cdnurl:
+        type: string
+        format: url
+      active_region:
+        type: integer
+      state:
+        type: boolean
+        description: active or stop
+
+  DepositAddress:
+    type: object
+    required:
+      - addr
+    properties:
+      addr:
+        type: string
+
+  Traffic:
+    type: object
+    required:
+      - id
+      - cdn_id
+      - timestamp
+      - traffic_amount
+    properties:
+      id:
+        type: integer
+      cdn_id:
+        type: integer
+      timestamp:
+        type: integer
+      traffic_amount:
+        type: integer
+
+  Profit:
+    type: object
+    required:
+      - id
+      - timestamp
+      - amount
+      - precision
+    properties:
+      id:
+        type: integer
+      timestamp:
+        type: integer
+      amount:
+        type: integer
+      precison:
+        type: integer
+
+  AccountTokenPayload:
+    type: object
+    required:
+      - userid
+      - username
+      - phonecode
+      - phonenum
+      - email
+      - authority
+    properties:
+      userid:
+        type: integer
+      username:
+        type: string
+      phonecode:
+        type: string
+      phonenum:
+        type: string
+      email:
+        type: string
+      authority:
+        type: array
+        items:
+          type: string
+
+
+        # ### common
+        # | status code | resson         |
+        # | ----------- | -------------- |
+        # | 0           | no error       |
+        # | 101         | not authorized |
+        # | 102         | failure        |
+        # | 103         | params error   |
+        # | 999         | unknown error  |
+
+        # ### cdnUserRequest /cdn/*action
+        # | status code | resson         |
+        # | ----------- | -------------- |
+        # | 201           | bind name not exist       |
+        # | 202           | bindDomain is off       |
+        # | 203           | not enough balance       |
+
+        # ### /client/newdomain
+        # <!-- 10xx -->
+        # | status code | resson                  |
+        # | ----------- | ----------------------- |
+        # | 1001        | bind name already exist |
+        # | 1002        | originUrl already exist |
+
+        # ### /client/modifydomainstate
+        # <!-- 11xx -->
+        # | status code | resson              |
+        # | ----------- | ------------------- |
+        # | 1101        | domain id not exist |
+
+        # ### /client/deletedomain
+        # <!-- 12xx -->
+        # | status code | resson              |
+        # | ----------- | ------------------- |
+        # | 1201        | domain id not exist |
+
+        # ### /client/getdomains
+        # <!-- 13xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # | 1301        | 12345  |
+
+        # ### /client/traffic
+        # <!-- 14xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # |             |        |
+
+        # ### /client/getdepositrecord
+        # <!-- 15xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # |             |        |
+
+        # ### /client/depositaddr
+        # <!-- 16xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # |             |        |
+
+        # ### /client/getbalance
+        # <!-- 17xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # |             |        |
+
+        # ### /terminal/getmachineinfo
+        # <!-- 18xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # |             |        |
+
+        # ### /terminal/profit
+        # <!-- 19xx -->
+        # | status code | resson |
+        # | ----------- | ------ |
+        # |             |        |
+
+        # ### /user/register
+        # <!-- 20xx -->
+        # | status code | resson                 |
+        # | ----------- | ---------------------- |
+        # | 2001        | username already exist |
+        # | 2002        | email already exist    |
+        # | 2003        | phone already exist    |
+        # | 2004        | vcodeError             |
+
+        # ### /user/login
+        # <!-- 21xx -->
+        # | status code | resson                     |
+        # | ----------- | -------------------------- |
+        # | 2101        | username not already exist |
+        # | 2102        | email not already exist    |
+        # | 2103        | phone not already exist    |
+        # | 2104        | password error             |
