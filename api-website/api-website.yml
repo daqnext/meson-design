@@ -1,9 +1,9 @@
 swagger: "2.0"
 info:
-  description: seflink-website-api
+  description: meson-network-api
   version: 1.0.0
-  title: Seflink
-host: xxx.com
+  title: meson
+host: meson.network
 basePath: /api/v1
 schemes:
   - https
