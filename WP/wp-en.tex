@@ -1,0 +1,657 @@
+
+\documentclass[12pt, a4paper, unicode]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{ifthen}     %% If then else
+\usepackage{verbatim}   %% For printing latex code
+\usepackage{lipsum}     %% For lorem ipsum sample text
+\usepackage{etoolbox}   %% Bibliography chapter to section
+\usepackage{multibbl}   %% Multiple bibliographies
+\usepackage{epigraph}   %% Adding text to part pages
+\usepackage{epipart}    %% Custom code to add epigraph to part pages
+\usepackage{titletoc}   %% Multiple tables of content
+\usepackage{graphicx}   %% Sample images
+\usepackage{longtable}  %% Tables spanning more pages
+\usepackage{ragged2e}   %% Alignment of quotes
+
+%% PACKAGES USED ONLY IN FOREWORD PAGE (SAFE TO DELETE)
+\usepackage{setspace}   %% Changing line height in foreword (delete this) 
+\usepackage{xcolor}     %% Changing the background color of foreword (delete this)
+\usepackage{afterpage}  %% Changing the color back (delete this)
+
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage[all]{hypcap}%% Hyperlinks to the beginning of the figure
+
+% Epigraph on the full textwidth justified to the left
+% We use the epigraph in custom epipart.sty to display toc on \part page
+\setlength{\epigraphwidth}{\textwidth}
+\renewcommand{\epigraphflush}{flushleft}
+
+\newcommand{\smalltoc}[4]{
+    % Custom command for easy creation of the partial table of content
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % First argument is the identifier of the toc
+    % Second argument is starting depth of the toc
+    % Third argument is depth of the toc
+    % Fourth argument is optional section* name
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Contents of this toc is stopped automatically when 
+    % the next startcontent with the same name is issued.
+    % To alter this, you can use \stopcontents[name] to 
+    % manually set what needs to be in your toc.
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \vspace{1pc}
+    \ifthenelse{\equal{#4}{}}{}{\section*{#4}}
+    \hrule\vspace{1pc}
+    \startcontents[#1]
+    \printcontents[#1]{}{#2}[#3]{}
+    \vspace{1pc}
+    \hrule
+    \vspace{1pc}
+}
+
+% Redefining the default behavior of Chapters in report 
+% to get rid of the "Chapter" line before chapter title
+% Comment this code if you do not like it
+    \makeatletter
+    \def\@makechapterhead#1{%
+      \vspace*{50\p@}%
+      {\parindent \z@ \raggedright \normalfont
+        \ifnum \c@secnumdepth >\m@ne
+            %\huge\bfseries \@chapapp\space \thechapter
+            \Huge\bfseries \thechapter.\space%
+            %\par\nobreak
+            %\vskip 20\p@
+        \fi
+        \interlinepenalty\@M
+        \Huge \bfseries #1\par\nobreak
+        \vskip 20\p@
+      }}
+    \makeatother
+
+% Removing the page number from parts in TOC + some spacing
+\titlecontents{part}[0em]{\vspace*{1.5em}\bfseries\Large}{}{}{}[\vspace*{0.5em}]
+
+% Changing spacing of the chapters in TOC (with dotted rule)
+% \titlecontents{chapter}[0em]{
+%     \vspace*{0.2em}\bfseries}{}{}{\titlerule*[9.2pt]{.}\contentspage}[\vspace*{0.1em}]
+
+% Changing spacing of the chapters in TOC (without dotted rule)
+\titlecontents{chapter}[0em]{
+    \vspace*{0.2em}\bfseries}{}{}{\hfill\contentspage}[\vspace*{0.1em}]
+
+% Document information
+\author{Daqnext Foundation}
+\title{\huge{Meson Network}\\
+       \vspace{1pc}\large{The next generation acceleration network}}
+\date{2020}
+% \date{\the\year}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BEGIN DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template foreword page (DELETE THIS)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \input{foreword(todelete)}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Initialization of TOCs, LOT, LOF & bibliographies
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Initialization of separate tables of contents for each part
+% because we want a different depth in each part of the main toc.
+\startcontents[tocpart1] % TOC only containing items from Part 1
+\startcontents[tocpart2] % TOC only containing items from Part 2
+\stopcontents[tocpart2] % Stopping and resuming in Part 2
+\startcontents[tocappendix] % TOC only containing items from Appendix
+\stopcontents[tocappendix] % Stopping and resuming in Appendix
+
+% Initialization of separate bibliographies because we want
+% one bibliography for the first part and separate for each 
+% chapter of the second part.
+\newbibliography{preamble}
+\bibliographystyle{preamble}{plain}
+\newbibliography{ch1}
+\bibliographystyle{ch1}{plain}
+\newbibliography{ch2}
+\bibliographystyle{ch2}{plain}
+
+% Initialization of LOT (list of tables) and LOF (list of figures)
+\startlist[lotpart1]{lot}
+\startlist[lofpart1]{lof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Displaying Abstract & Keywords page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+
+\section*{Overview}
+
+    With the evolution of the Internet, stream media such as video, live streaming, short video have entered mainstream and experienced exponential growth. More and more people spend an increasing chunk of their time on entertainment using stream media. In 2020, due to the impact of COVID-19, popular demand for online entertainment has risen to an unprecedented level. Short video platforms such as Tiktok has a daily active user population of over 600 million in August, 2020, Netflix global subscriber population has surpassed 180 million in March, 2020, Taobao top streaming sales channels have created a record of having a live audience of over 100 million. Behind such an impressive demand for stream media, is the equally impressive cost of bandwidth.
+
+    In order to guarantee the viewing experience of users from all across the world, traditional internet companies tent to use content delivery network to speed up content delivery. At Amazon's early time, it once reported for its website to have an additional visiting time of 1s, it needed to have an additional sales revenue of \$1.6 billion USD. In the era of streaming media, users have become more sensitive about content consumption experience, data transmission volume has grown tenfolds and hundredfolds, the demand for higher video quality has been also rising considerably. According to the prospectus of Kuaishou, its short video platform had doled out 2.52 billion Chinese Yuan (\$388m USD) to pay for bandwidth and server cost. Thanks to the explosion of stream media, a new era of acceleration market has also been growing with tremendous speed.
+
+    At the same time, a large amount of server bandwidth is idle around the world. Compared with the complexity of computing resources, bandwidth is relatively easy to standardize and the market has a huge demand for accelerated services that utilize bandwidth. Based on this, we propose "Meson Network", which enables miners to participate using general servers based on blockchain technology. Meson removes the mining barrier by enabling user to use general idle servers and at the same time reduces the cost of accelerated service used by enterprises.
+
+
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Displaying Acknowledgement page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pagestyle{empty}
+
+%\section*{Acknowledgement}
+%\lipsum[1-3]
+
+% Signature
+%\vspace{5em}
+%\hfill
+%\begin{minipage}[t][][t]{16em}%
+%  \begin{center}%
+%    \dotfill \\
+%    Author's signature
+%  \end{center}%
+%\end{minipage}%
+%\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Displaying main TOC (Table of Contents)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Displaying merged tocpart1 and tocpart2 as one main TOC
+% Benefit of doing this is separate settings for each TOC
+\printcontents[tocpart1]{}{-1}[2]{\chapter*{Contents}} 
+\printcontents[tocpart2]{}{-1}[0]{}
+\printcontents[tocappendix]{}{-1}[0]{}
+\thispagestyle{empty}   % turn off page numbering for TOC
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Displaying LOT (Lists of Tables)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter*{List of Tables}
+%\thispagestyle{empty}   % turn off page numbering for LOT
+%\printlist[lotpart1]{lot}{}{}{}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Displaying LOF (List of Figures)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter*{List of Figures}
+%\thispagestyle{empty}   % turn off page numbering for LOF
+%\printlist[lofpart1]{lof}{}{}{}
+%
+%\cleardoublepage\pagestyle{plain}   % turning on the page numbering
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PART 1 PREAMBLE
+% In this part you can write an Introduction to your dissertation,
+% you can summarize all the publications which will be included
+% later on in full, and you can conclude your dissertation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% In this part, we want arabic numbering of chapters 
+\renewcommand\thechapter{\arabic{chapter}}
+
+\epigraphhead{} % Use before parts without epigraph
+
+%\addcontentsline{toc}{part}{Preamble} % Add starred part to contents
+
+
+    %%%%%%%%%%
+    % PART 0 - CHAPTER 0
+    %%%%%%%%%%
+    \chapter{Background}
+    
+    Video streaming platforms such as TikTok, Youtube, Instagram, Twitch and Netflix greatly improve the diversity and quality of entertainment life online. For instance, the fastest growing short video platform TikTok achieved an app downloading volume that surpassed that of Facebook, Instagram, Snapchat and Youtube. According to Prior Data, as of November, 2019, the total number of TikTok app downloads had surpassed 41 million. in 2020, with the sudden arrival of COVID-19, online entertainment applications have exploded in visiting volume, in January 2020, TikTok had achieved a monthly download volume of 7.7 million in the US, and became the most downloaded non-game app, a YOY increase of 28.3\%; in February, TikTok download volume exceeded 6.4 million, still the number one spot in the US non-game application market; in March, total usage time for TikTok exceeded 600 million hours. In the same season, TikTok had a total number of downloads on IOS and Google Play exceeding 315 million times, the most downloaded app in a season of all time.
+    
+    In August 2020, Data presented by TikTok showed its daily number of active users had exceeded 600 million. According to the November 2020 prospectus of TikTok's competitor Kuaishou: Kuaishou's number of daily active users has exceeded 300 million in China, a YOY increase of 110\%. Other than short video, live stream platforms have also experienced extraordinary growth. Taobao is a classic example of e-commerce sales platform, during its highest user activity period in its November 11 event, there are over 100 million users online at the same. Other platforms such as Twitch and Douyu have paid a huge fee for bandwidth to ensure high quality user experience. Therefore, bandwidth intensive applications such as stream media applications are storming the world, and to ensure user experience, huge sum of money has to be paid to acceleration providers around the world.
+
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{kuaishou2.png}
+    \caption{Kuaishou HKEX Prospectus}
+    \label{fig:kuaishou}
+    \end{figure}
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % PART 1 - CHAPTER 1
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    \chapter{Introduction to Content Delivery Network}
+
+%    \cite{preamble}{example}. 
+
+    
+    % QUOTE
+%   \begingroup
+%   \setlength{\epigraphwidth}{13.0cm}
+%   \renewcommand{\epigraphflush}{flushright}
+%   \vspace{0.3cm}
+%   \epigraph{\justifying\large\textit{"A thesis has to be presentable… but don't attach too much importance to it. If you do succeed in the sciences, you will do later on better things and then it will be of little moment. If you don’t succeed in the sciences, it doesn’t matter at all."}}{\textit{Paul Ehrenfest, 1985}}
+%   \vspace{0.3cm}
+%   \endgroup
+    
+    \section{What is Content Delivery Network}
+        It is a cost effective and reliable solution to the user experience and access problems brought by an exponential explosion of content delivery and distribution. It is a new web infrastructure that is made up of accelerator nodes that are distributed geographically. These service nodes will store your business content according to smart caching strategies. When a user initiates a request for your business services, the request will be routed to the service node closest to the user so responses can be as quickly as possible, and delays can be minimized, effectively improving user experience and service usability.
+
+    
+    \section{Why Content Delivery Network}
+    \subsection{Increasing Access Speed}
+    Traditionally, most enterprises only deploy their servers in a few regions, which could not meet the need of servicing a global or even a national audience due to the complexity of regional networks, not to mention the complexity of a global network. Having a limited number of nodes that are topologically concentrated simply cannot guarantee access quality across the network. Because services provided by modern internet companies naturally cater to a national or even an international audience, this accessibility problem has become ever more critical to businesses. As users become further and further away from servers rooms, the time it takes to transmit information becomes longer, network uncertainty becomes bigger. It is a highly effective solution because nodes can be deployed all around the world, and data can be cached in these nodes. This significantly improves access speed an accessibility of online services even in a massive and highly complex network.
+    
+    \subsection{Decreasing Network Usage Cost}
+    Using this solution can greatly reduce the cost of R\&D and network fees.
+
+    \subsection{Security Against Attack}
+    When an enterprise exposes its own servers' source IP addresses to end users, it makes itself extremely vulnerable to attacks such as DDoS that will damage the stability and security of its online services. Using the Network can hide the source IP addresses and protect the servers from DDoS.
+
+    \section{The Current State of Growth of the Market}
+    The market has a size of \$23B USD, while growing at a fast and accelerating rate.
+    
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=13cm]{market-cap.png}
+    \caption{https://www.t4.ai/industry/cdn-market-share}
+    \label{fig:cdn-market}
+    \end{figure}
+    
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=11cm]{cdn-increase.png}
+        \caption{https://www.statista.com/statistics/267184/content-delivery-network-internet-traffic-worldwide/}
+        \label{fig:cdn-increase}
+    \end{figure}
+    
+
+%    \section{Future Development Directions}
+    With the continuous deployment and improvement of network edge computing capabilities as 5G era arrives, network operators are increasingly deploying MEC  to maximize return on computing resources and take advantage of the similarity between edge computing and Content Delivery Network and the similar suitability of deployment locations.
+
+    According to relevant research data, more than 72\% of total internet traffic will go through Content Delivery Network by 2022, an increase of 28\% from 2017. This shows that the market will maintain high growth and gradually become the dominant solution for the increasing demand on higher speed delivery of content in the 5G and Web 3.0 era.
+
+    With the a accelerating growth of new network infrastructure such as 5G, IoT and Web 3.0, edge delivery network (EDN) will also continue to improve the access volume, speed and quality of online services and networks through the provision of highly stable content delivery and edge computing products. Therefore, better products will be able to quickly obtain market share in the current expansion and mass adoption phase of the market.
+
+
+    
+%    \begin{table}[ht]
+%        \centering
+%        \begin{tabular}{|c|c|}
+%        \hline
+%           Example col 1  &  Example col 2  \\
+%           10             &  20             \\
+%          \hline
+%        \end{tabular}
+%        \caption{Example table}
+%        \label{tab:exampleTab}
+%    \end{table}
+%    
+%    \begin{figure}[ht]
+%        \centering
+%        \includegraphics[width=5cm]{example-grid-100x100pt}
+%        % \includegraphics{}
+%        \caption{Example figure}
+%        \label{fig:exampleFig}
+%    \end{figure}
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % PART1 - CHAPTER 2
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \chapter{The Problems Meson is Solving}
+    
+    \section{Breaking Monopoly}
+    Nowadays, so many companies are using content acceleration services that top solution providers like AWS and Cloudflare have reached market capitalization of over tens of billions of US dollar. With the explosion of stream media, future demand for content acceleration will only get larger and larger. However, many companies do not have a lot of choices when it comes to solution providers. The market price has been more or less fixed, and market profit has been shared by several giants. Looking from the supply side, there is a wealth of idle bandwidth that can offer network resources and hardware comparable to those offered by giants, thus there exists a significant quantity of invested bandwidth resources that have not been optimally monetized. Meson provides an opportunity to break the monopoly of giants, on one hand, we provide a network provision standard for bandwidth resources to be connected, on the other hand, we release the extra value that is been kept behind locked door by giants so far.
+
+    \section{Saving Sunk Cost}
+    
+    Among all computer resources, general-purpose servers are the most common resources. Developers/schools/institutions/enterprises around the world have a large number of general-purpose servers. This type of general servers is different from the limitations of traditional crypto currency mining machines (ETH, BTC) at the application level, and a large number of servers have been deployed and used everywhere. But looking at the world, many of these resources cannot be fully utilized, and it is difficult to find a reasonable channel for realization. Meson can be widely deployed on existing general services, so that everyone can deploy mining with one click. Meson intensively utilizes a large number of existing general-purpose servers through mining, reducing consumer costs and also enabling mining participants to gain benefits.
+    
+    \section{Reaching long tail users}
+    Many end users and merchants own or rent servers in the central computer room. Although the relevant configuration meets the requirements, due to the size and channel problems, the giants are unwilling to invest in sales manpower costs to cooperate with them. And if such users are aggregated, it will be attractive to giants. In view of this, Meson uses token incentives to acquire such users and does not invest huge manpower sales costs. Instead, it uses a spontaneous incentive model to let the long tail market join the network.
+    
+    \section{The Lack of Closed Blockchain Business Loops}
+    In the current state of the blockchain world, many projects could be greatly hyped in a short period of time, but most of them disappeared or became silent before long. The reason for such phenomena is that most of their business models are not closed loops, meaning they need to rely on stimulating constant speculation and price appreciation in order to get more and more buyers of their token. This inevitably leads to collapse of the token price and of the project that needs token price appreciation to stay relevant. 
+    
+    Meson has a clearly viable commercial closed loop business model. It generates more profit as its server resource network becomes larger. Combine this with an effective blockchain based token economic design will allow us to connect idle server resources to those who need cheap and reliable server resources. We believe this closed loop ecosystem is able to become a front-running solution that will create extraordinary value for both the providers and the users of Meson. We seek to utilize tokens as basic incentive legos to drive the contribution of server resources to the network, as well as continuous development and optimization of products, ultimately helping Meson evolve into a sustainable growth economy.
+
+
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % PART1 - CHAPTER 3
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %\chapter{Meson Commercial Milestones}
+    %\section{Our Customers and Business Goals}
+    %\textbf{Business service customers include all small, medium and large size %internet companies}
+    %
+    %Any internet companies or platforms need CDN acceleration to ensure optimal user %experience. Amazon's example of one second service disruption would cost it \$1.6 %billion in sale is a testament to how critical stability and easy accessibility %have become for online services. Even very small service access disruptions may %incur significant loss on the service providers. The commercial goals of Meson in %this consumer segment are
+%
+    %
+    %1) Extremely stable global acceleration;
+    %
+    %2) Extremely fast global acceleration;
+%
+    %3) Significantly lower cost of acceleration service;
+%
+    %4) On click access without the need of any SDK or client installation.
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % PART1 - CHAPTER 4
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \chapter{Meson}
+    \section{Design Philosophy}
+    We adhere to the following principles in designing Meson:
+    
+    \textbf{Simplicity}: The architecture and communication components should be as simple as possible, so that the average engineer can effectively implement the defined specifications with ease and introduce the protocol through their applications and works. We would not add overly complex optimization schemes unless absolutely necessary.
+    
+    \textbf{Open}: the protocol does not impose any restrictions, any terminals that comply with the specification and requirements of the protocol can join the network. The network behaviors are not restricted. Users can use the resources within the network as long as they pay the necessary fees stipulated by the protocol.
+    
+    \textbf{Modular}: The Meson design is modular. Each module should be as independent and decoupled from each other as possible so that one module would not have a significant impact on the other.
+    
+    \textbf{Ease of use}: End users only need double click on a program in Windows or copy paste a command line in Linux in order to join the network. Generated return should be displayed visually, alongside the contribution and withdrawal of server resources. User friendliness has always been an important tenet for Meson.
+    
+    \section{Network Roles}
+    We hereby define several roles and functions in the network
+
+    - Terminal: A terminal node that joins the Meson network to store data and respond to service request in order to gain revenue.
+
+    - Router: Responsible for allocating and scheduling network requests.
+    
+    - Hunter: Responsible for finding bugs and vulnerabilities in terminals by sending requests to terminals in order to evaluate their reliability and integrity. It submits information about problematic or at risk terminals to the council to receive high bounty rewards after verification.
+    
+    - Council: Responsible for governance and oversight.
+    
+    - Client: Ordinary Internet users
+    
+    - Business User: Customers who have a need for the acceleration network.
+
+    
+    \section{Protocol and Information}
+    The core functions of the terminal is to carry out data caching, deletion and response services, as well as providing heartbeat packets and local configuration information to ensure the Core can perceive the existence of the terminal. In addition, if the terminal is down, the integrity of the flies needs to be self-checked and updated when the terminal is restarted. Since the terminal code is open sourced in the design, there exists the possibility of malicious actions, thus it is necessary to do spot checks and verifications on data and transmission.
+    
+    In view of the above functions, the terminal needs to include the following basic operations
+
+    - save/cache file(s) (originURL, verified hash, TTL)
+    
+    - delete file (file hash)
+    
+    - get file (file hash)
+    
+    - heartbeat
+    
+    - hardware configuration
+    
+    - index of local cached files
+    
+    - shards spot check
+    
+    \section{Transmission Verification}
+    The key to network acceleration is data transmission acceleration. Under a certain level of total system resources, it is ideal for terminals to store as much cached files as possible, while also moving frequently requested files to be cached at locations close to the requester. After a terminal is started, it will start to cache files. When a certain threshold is reached, the terminal will delete files that have low request frequency. The deletion operation is initiated by the terminal, and verified by the dispatcher. Alternatively, Deletion operation can also be directly made by the control terminal. When assigning caching tasks, the control needs to know the remaining storage space of the terminal and whether it has the ability to continue to cache files so as to optimize network efficiency.
+
+    Since terminal code is open sourced, users may perform malicious actions, thus the network requires transmission verification for security. Meson uses spot checks and bounty hunters as means of verification and checks against potential attackers. The malicious behaviors of users can be divided into two categories, Modify data or decline to store corresponding data. 
+
+    When dealing with maliciously modify data, the scheduling module has a hash check of the data source and randomly stores part of the fragmented data. The system will randomly check the data stored in the terminals according to certain proportions and weights. If it is found that the data returned by the user is different from stored data, then the user will be punished with a fine. 
+
+    For attacks that involve not storing data, we propose the defense of random checks by the system on one hand, and the introduction of bounty hunters on the other hand. When hunters request terminal services, if the data is missing or damaged, the hunter can submit information directly to the council and obtain rewards after verification. if terminals are found to be malicious, their tokens will be confistigated and distributed to the cheated parties according in order to disincentivize destabling factors in the network.
+    
+    \section{Reliability and Redundancy}
+        A key feature of acceleration network is its ability to keep content online even when faced with common network problems such as hardware failures and network congestions. By means of load balancing internet traffic, using intelligent failover, and maintaining servers across many data centers and locations, it can avoid network congestions and resist service interruptions.
+    
+        Data centers can use load balancing to distribute incoming requests to available server pools to ensure traffic peaks are handled in the most effective manner. Load balancing can increasing data processing speed and optimize server capacity usage. Proper balancing the load of incoming traffic is a key component in mitigating peak traffic during periods of atypical internet activities ( such as when a website encounters an unusually large number of visitors, or when a distributed denial of service attack occurs). Using load balancing can also help make swift and effective changes when the supply of server resources fluctuate significantly up and down. If a server fails and a failover occurs, the load balancer will redirect the traffic allocated to the failed server and redistribute it proportionally to the remaining servers. This will decrease the possibility that a hardware failure will interrupt traffic, thereby providing flexibility and reliability to the entire network. When a new server comes online, the load balancer will offload other servers proportionally and increase the utilization rate of the new hardware. Leveraging software-based load balancing services, it can quickly expand load balancing capacity without encountering bottlenecks when using physical load balancing hardware.
+
+        Making use of the Anycast routing method to transmit internet traffic to a specific terminal helps Meson reduce response time and prevent any terminals from becoming overwhelmed in the event of abnormal demands such as DDoS attacks. Thanks to Anycast, multiple computers can share the same IP address. When the request is sent to the Anycast IP address, the router will direct it to the nearest computer in the network. If the entire network fails or is unable to cope with a large amount of communication due to other reasons, the Anycast network can respond to service interruptions similar to how a load balancer transmits communication across multiple servers: data is transferred from the failed location and routed to another functioning terminal.
+
+
+    \section{Economic and Governance Model}
+    \subsection{Token Incentives}
+    
+    Meson uses blockchain tokens as a means of providing and changing incentives. In BitTorrent network, users would contribute their upload bandwidth to get a better download speed, but in many cases, they would exit the network(close the software) after the download is completed. At this time, the network is idle, but because there is no download needs and no other incentives, users will not continue to be on the network after their downloads. The main problem with the original BitTorrent network is that there is only the possible exchange of similar resources, if users want more download bandwidth, they have to provide upload bandwidth in exchange. however, once they have fulfilled their download needs, the exchange ceases and that decreases the overall networking effect of BitTorrent. Now, if the exchanges can be manifolds, not just an exchange of bandwidth, but also with tokens and other value stores, users will be much more inclined to be on the network even without download need.
+
+    
+    The tokens are distributed to network terminals as rewards for providing server resources. Users can evaluate the expected return of contributing resources based on their hardware situation. The role of hunters is to constantly look for cheating and malicious behaviors in the network. If hunters discovered such behaviors, they can submit relevant information to the council and pledge a certain amount of tokens on their claims. If the council confirms the claim, the terminals in question will be punished. Otherwise, the tokens pledged by hunters will be deducted as punishment. If Meson adopted a DAO governance model, then holding tokens can initiate proposals and participate in voting, including joining the council and having a claim in dividend from protocol revenue.
+    
+    The main profit generator of Meson is the provision of acceleration services to businesses. Since the cost of running a terminal node is mostly a sunk cost, node operators can safely contribute resources for a profit so long as attention cost is minimal and no additional cost is incurred. Due to the standardization at the protocol level, users can join and exit at will without much hassle, making it easier to from a super-large-scale distributed acceleration network. The effect of the network is proportional to the square of the number of nodes, so the Meson network has the potential to grow very rapidly. Because of token incentives, terminal nodes would voluntarily join the network. The more nodes, the higher the network effect capacity and value, leading to more demand and a higher price tag for our acceleration services. The controller transfers fees paid by the users to server resources contributors through the repurchase and destruction of tokens, aligning the interest of the investors, users and the protocol as a whole.
+
+
+    \subsection{Governance Model}
+     
+    In order to make sure the continuous evolution and development of the network, Meson allows its token holders to vote to modify various parameters of the protocol. Anyone can submit a proposal to initiate a token vote, not just the token holders.
+
+    Changes to protocol variables are unlikely to take immediate effect after they pass voting. If the community decided to immediately adopt the governance results, then these changes will likely take place at the latest in 24 hours. This period gives token holders the opportunity to act, and if necessary, trigger a shutdown mechanism to oppose malicious governance proposals ( for instance, making significant changes to the proportion of revenue distribution, which would likely hurt the interest of some token holders).
+    
+    Council plays the role of maintaining order and stability in the network. Council members run the verification code in the Trusted Executive Environment (TEE). The council also inspects malicious behavior reports submitted by hunters in order to determine and carry out penalties. Members enter councils through a voting process, they also need to pledge/take tokens in order to take up a seat. The implementation of all proposals and actions is supervised by the council, such as carrying out punishment and handing out rewards.
+
+    \section{Our Customers and Business Goals}
+    \textbf{Business service customers include all small, medium and large size internet companies}
+    
+    Any internet companies or platforms need acceleration to ensure optimal user experience. Amazon's example of one second service disruption would cost it \$1.6 billion in sale is a testament to how critical stability and easy accessibility have become for online services. Even very small service access disruptions may incur significant loss on the service providers. The commercial goals of Meson in this consumer segment are
+
+    
+    1) Extremely stable global acceleration;
+    
+    2) Extremely fast global acceleration;
+
+    3) Significantly lower cost of acceleration service;
+
+    4) On click access without the need of any SDK or client installation.
+    
+    
+    \section{Comparison with Filecoin}
+    Filecoin proposed a scheme for storing data, but because the official design route puts too much emphasis on encryption algorithms and ignores the nature of commercial profitability, this design leads to the actual use of storage costs far higher than the storage prices of third parties such as AWS. In essence, it cannot form a closed loop of commercial competitiveness and profitability, and thus cannot be used for commercial purposes at a large scale. 
+    
+    On the other hand, Meson is not used for file storage but for file acceleration. Compared with storage, accelerated services have greater commercial value. the initial goal of designing Meson is to create a commercially viable closed loop business model, leveraging on service price that is significantly lower than traditional providers. Both the economic model and the distributed approach to transmission are fundamentally in service to real business interests.
+    
+    \section{Comparison with BitTorrent}
+    BitTorrent is a transmission method based on traditional P2P client. it is made for householder users in mind. This transmission requires the user to install the client or the SDK. However, since all network nodes are based on household clients, acceleration in the network will be relatively unstable. Commercial users tend not to use this service because of the non-universal nature of the integrated SDK and reservations about the uneven performance. In sum, BitTorrent is in essence a household P2P network that provides storage and acceleration services.
+    
+    In addition, the native BitTorrent network has problems on the incentive layer. Because the the resources exchanged are the same (contribute upload bandwidth to obtain download bandwidth), many users are not sufficiently motivated to provide services to the network after their own download tasks have been finished, resulting in greater overall uncertainty.
+    
+   Meson draws on the advantages of BitTorrent while seek to solve the problems associated with BitTorrent. Meson aims to attract idle IDC resources in order to create the next generation stream acceleration distributed protocol that takes advantage of a more reasonable incentive model to develop the cheap, highly stable and fast.
+   
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % PART1 - CHAPTER 5
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \chapter{Applications}
+    \section{Large scale commercial acceleration service}
+    Early data center users were motivated by token incentives to join the network. They seek to make revenue from their idle server resources, or at least save a portion of their sunk costs, thus their contribution enabled low cost but good quality service. In addition, the buyers will begin to pay to test the network due to cost and other considerations. The revenue from fees will be used in the repurchase of token, which strengthens the incentive effect and attracts an increasing number of users to the network. The effect of geometric growth will make the network exponentially more capable, which further entices businesses to use the Meson network and provides positive feedbacks to the nodes.
+    
+    \section{Edge Node Access}
+    With the adoption of infrastructure such as 5G, which has the traits of low latency and large bandwidth, a large number of edge nodes can serve as terminals for acceleration service provision. IoT services, even smartphones, can join the network to earn revenue, in the process forming a large-scale distributed acceleration network.
+
+    
+    \section{Idle Resource Access}
+    Providing a way to monetize idle bandwidth.
+
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % PART1 - CHAPTER 6
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \chapter{Conclusion}
+    We are in a great era of continuous technological advancement and progress. As more and more things obtain an information and data side, the demand for better internet speed and capacity has grown higher and higher. The end user experience has become a key area to invest in for many companies, with stream acceleration at the forefront. However, at the same time, I also noticed that the solutions of many centralized vendors are not only costly, but also have the problem of performance instability. With the improvement of existing terminal node data processing capabilities, networks and storage, the basic conditions for establishing a new generation of stream acceleration networks have gradually matured. Since the each type of terminal nodes serve different functions, such as coping with peak traffic, creating redundancy, testing and idle, there are many differences in their maintenance costs. Therefore, it is hoped that a set of agreements can be formulated so that users can choose to join the network and use token to motivate users. Since the network is distributed and the cost is determined by the terminal nodes, it can provide a acceleration service network with a relatively reasonable price and a reliable architecture. The rapid growth of the market can bring significant positive incentives to the network, thus creating a reliable business model and ultimately create better experience for end users.
+
+
+
+
+
+
+
+% Bibliography
+%\bibliography{preamble}{ms}{Bibliography}
+%\addcontentsline{toc}{chapter}{Bibliography} % Add starred chapter to contents
+
+% Closing the tocs and lists
+\stopcontents[tocpart1] % Stops the tocpart1
+\stoplist[lotpart1]{lot} % Stops the lotpart1
+\stoplist[lofpart1]{lof} % Stops the lofpart1
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GROUP FOR PART 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begingroup
+
+% In this group, we want Bibliographies to show up as sections
+%\patchcmd{\thebibliography}{\chapter*}{\section*}{}{} 
+
+% In this group, we want Roman numbering of chapters 
+%\renewcommand\thechapter{\Roman{chapter}}
+
+% In this group, we want to restart the chapter numbering
+%\setcounter{chapter}{-1}\stepcounter{chapter}
+
+% Resume the contents counter of tocpart2 to include items from PART 2
+%\resumecontents[tocpart2]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PART 2 PUBLICATIONS
+% In this part you can include all your publications which
+% the dissertation should comprise of. Depending on your uni
+% guidelines, the publications could be attached in their original
+% templates (just as pdfs), or they can be put into a unified
+% style of this dissertation. Adding them as pdfs is for sure
+% easier, but it degrades the style of the document and it
+% also can introduce problems with copyright (check the guidelines
+% of the publishers where your papers were printed).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\cleardoublepage
+%\epigraphhead[400]{\smalltoc{p2}{0}{0}{}}
+%\part*{Publications}\label{Publications}
+%\addcontentsline{toc}{part}{Publications}
+%
+%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    % PART2 - CHAPTER 1
+%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    % \chapter{Title of the First Publication}
+%    \chapter[Shortened Title of the First Publication \dots]
+%            {Very Long Title of the First Publication}
+%    
+%    % Mini table of content for this chapter {name}{start}{depth}{section name}
+%    \smalltoc{p2ch1}{0}{3}{Outline}
+%    
+%    \section*{Bibliographic Information}
+%    % The package biblatex which supports \fullcite collides with the package multibbl
+%    % I have not found a solution how to print a bib item in the text so I write it %out.
+%    % If you find a solution, please, post it here: %https://tex.stackexchange.com/questions/173935
+%    Doe,~J., Coffee,~T., Zinn,~C., Leleux,~E., Corcoran,~B., (2019, July). Example %research topic in example spaces. In 2019 international example conference (IEC) %(pp.1-5). Publisher. \href{https://doi.org}{xxxx.xxxx.xxxxxxx}. %\href{https://arxiv.org}{arXiv:xxxx.xxxxx}.
+%    
+%    \section*{Author's contribution}
+%    The author contributed to \dots. Furthermore, wrote a significant part of \dots.
+%    
+%    \section*{Copyright Notice}
+%    \copyright \the\year\ Publisher. This is an accepted version of this article %published in \href{https://doi.org}{doi-xx-xxxx}. Clarification of the copyright %adjusted according to the guidelines of the publisher.
+%    \clearpage
+%    
+%    % Include the contents of the publication here
+%    \include{publication1/publication1}
+%    
+%    % Bibliography
+%    \phantomsection
+%    \addcontentsline{toc}{section}{Bibliography}
+%    \bibliography{ch1}{publication1/publication1}{Bibliography}
+%    
+%    \stopcontents[p2ch1]
+%    
+%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    % PART 2 - CHAPTER 2
+%    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \chapter{Title of the Second Publication}
+%    
+%    % Mini table of content for this chapter {name}{start}{depth}{section name}
+%    \smalltoc{p2ch2}{0}{3}{Outline}
+%    
+%    \section*{Bibliographic Information}
+%    % The package biblatex which supports \fullcite collides with the package multibbl
+%    % I have not found a solution how to print a bib item in the text so I write it %out.
+%    % If you find a solution, please, post it here: %https://tex.stackexchange.com/questions/173935
+%    Doe,~J., Coffee,~T., Zinn,~C., Leleux,~E., Corcoran,~B., (2019, July). Example %research topic in example spaces. In 2019 international example conference (IEC) %(pp.1-5). Publisher. \href{https://doi.org}{xxxx.xxxx.xxxxxxx}. %\href{https://arxiv.org}{arXiv:xxxx.xxxxx}.
+%    
+%    \section*{Author's contribution}
+%    The author contributed to \dots. Furthermore, wrote a significant part of \dots.
+%    
+%    \section*{Copyright Notice}
+%    \copyright \the\year\ Publisher. This is an accepted version of this article %published in \href{https://doi.org}{doi-xx-xxxx}. Clarification of the copyright %adjusted according to the guidelines of the publisher.
+%    \clearpage
+%    
+%    % Include the contents of the publication here
+%    \include{publication2/publication2}
+%    
+%    % Bibliography
+%    \phantomsection
+%    \addcontentsline{toc}{section}{Bibliography}
+%    \bibliography{ch2}{publication2/publication2}{Bibliography}
+%    
+%    \stopcontents[p2]
+%    \stopcontents[p2ch2]
+%    \stopcontents[tocpart2]
+%    \endgroup
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX (in case you need one)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Resume the contents counter of tocpart2 to include items from PART 2
+%\resumecontents[tocappendix]
+%
+%\appendix
+%\cleardoublepage
+%\epigraphhead[400]{
+%    \hrule\vspace{1pc}
+%    \printcontents[tocappendix]{}{0}[0]{}
+%    \vspace{1pc}\hrule}
+%\part*{Appendix}
+%\addcontentsline{toc}{part}{Appendix} % Add starred part to contents
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% APPENDIX - CHAPTER 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter{First Appendix}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% APPENDIX - CHAPTER 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter{Second Appendix}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% APPENDIX - CHAPTER 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\chapter*{Complete List of Publications}
+%\addcontentsline{toc}{chapter}{Complete list of publications} % Add starred part to %contents
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX - CV
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Curriculum Vit\ae} % Add starred part to contents
+
+%\include{cv}
+
+%\stopcontents[tocappendix]
+\end{document}
