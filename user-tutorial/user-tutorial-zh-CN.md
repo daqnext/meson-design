@@ -1,6 +1,16 @@
 # CDN用户与Miner操作指南
 
-[TOC]
+- [CDN用户与Miner操作指南](#cdn---miner----)
+  * [CDN用户 3步开始使用cdn加速服务](#cdn---3-----cdn----)
+    + [step1. 注册账号并登陆](#step1--------)
+    + [step2. 创建资源加速链接](#step2---------)
+    + [step3. 替换网页中原静态资源链接为加速链接](#step3------------------)
+  * [Miner挖矿指南](#miner----)
+    + [step1. 注册账号并登陆](#step1---------1)
+    + [step2. 下载并运行Terminal客户端](#step2------terminal---)
+    + [step3. 在网页上检查服务器运行状态](#step3--------------)
+    + [step4. 使用任意方式,将Terminal运行在后台](#step4---------terminal-----)
+
 
 ## CDN用户 3步开始使用cdn加速服务
 
