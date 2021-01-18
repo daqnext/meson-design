@@ -1,15 +1,15 @@
 # CDN User and Miner Guide
 
-* [CDN User and Miner Guide](#cdn-user-and-miner-guide)
-  * [3 steps to start using CDN acceleration service](#3-steps-to-start-using-cdn-acceleration-service)
-    * [Step1\. Register an account and log in](#step1-register-an-account-and-log-in)
-    * [Step2\. Create resource acceleration link](#step2-create-resource-acceleration-link)
-    * [Step3\. Replace the original static resource link in the webpage with an accelerated link](#step3-replace-the-original-static-resource-link-in-the-webpage-with-an-accelerated-link)
-  * [Miner mining guide](#miner-mining-guide)
-    * [Step1\. Register an account and log in](#step1-register-an-account-and-log-in-1)
-    * [Step2\. Download and run the Terminal client](#step2-download-and-run-the-terminal-client)
-    * [Step3\. Check the server status](#step3-check-the-server-status)
-    * [Step4\. Keep terminal running in the background](#step4-keep-terminal-running-in-the-background)
+- [CDN User and Miner Guide](#cdn-user-and-miner-guide)
+  - [3 steps to start using CDN acceleration service](#3-steps-to-start-using-cdn-acceleration-service)
+    - [Step1. Register an account and log in](#step1-register-an-account-and-log-in)
+    - [Step2. Create resource acceleration link](#step2-create-resource-acceleration-link)
+    - [Step3. Replace the original static resource link in the webpage with an accelerated link](#step3-replace-the-original-static-resource-link-in-the-webpage-with-an-accelerated-link)
+  - [Mining guide](#mining-guide)
+    - [Step1. Register an account and log in](#step1-register-an-account-and-log-in-1)
+    - [Step2. Download and run the Terminal client](#step2-download-and-run-the-terminal-client)
+    - [Step3. Check the server status](#step3-check-the-server-status)
+    - [Step4. Keep terminal running in the background](#step4-keep-terminal-running-in-the-background)
 
 ## 3 steps to start using CDN acceleration service
 
@@ -61,9 +61,9 @@ If your webpage supports https, please use https://, if not, please use http://
 
 ------------
 
-## Miner mining guide
+## Mining guide
 
-You only need a server with a public IP to become a miner and earn your income
+You need a public IP to become a miner and earn your tokens.
 
 ### Step1. Register an account and log in
 
@@ -89,25 +89,28 @@ ssh to your server, select the client corresponding to your operating system, do
 
 When running for the first time, the program will prompt you:
 
-`token` -- User identifier, you can find from  website
+`token` -- User identifier, you can get this from the website
 
-`spaceLimit` -- Hard disk space provided for service, at least 80G. The greater the storage space provided, the higher your profit will be
+`spaceLimit` -- Hard disk space provided for service, at least 80G. The more  storage space you provide, the higher profit you  will get
 
-`port` -- External service port, please do not use port 80 or 443, and ensure that your firewall will not block this port
+`port` -- External service port
 
-After the configuration, the terminal will run normally
+  1. please do not use port 80 or 443
+  2. make ensure that your firewall will not block your port
 
 ### Step3. Check the server status
 
-Usually in a few minutes, you can see that your server is online and running at the bottom of the web page
+Usually in a few minutes, you can see that your server is online and running.
 ![avatar](./img/terminal3.png)
 
-If the server's `Status` is `ON`, it means your server has been running normally and has been included in our accelerated network
+If the server's `Status` is `ON` which indicates that your server has been running successfully and has been included in our acceleration network.
 
 ### Step4. Keep terminal running in the background
 
-Let the Terminal program run in the background, and recommend to set up a boot-up
+we recommend you :
 
+1. Setup a background process to run the terminal
+2. Configure an auto-start program to run the  terminal
 
-Note: 
-In the meson network, the same IP is regarded as the same machine, so please do not run multiple Terminal programs on the same IP and the same server. This will not increase your income, and may be regarded as Cheating
+Note:
+In the meson network, the same IP is regarded as the same machine, so please do not run multiple Terminal programs on the same IP and the same server. This will not increase your income.
