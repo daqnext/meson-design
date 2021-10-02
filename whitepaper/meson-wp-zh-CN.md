@@ -13,7 +13,7 @@ TikTok、Youtube、Instagram、Twitch、Netflix 等这类视频、直播类媒�
 
 在 2020年8月，抖音给出数据表明，其日活已超 6 亿，如此大的体量，其背后付出的流量费用是比不小的开支。参考其中国竞争对手 Kuaishou 于 2020 年 11 月向港交所提交的招股书
 
-![图片](https://uploader.shimo.im/f/pBFBOuRsXjBICtQM.png!thumbnail)
+![](https://user-images.githubusercontent.com/46369948/135701242-07aedee9-1f4f-403e-a6ce-01e560f08e24.png)
 
 注意到，Kuaishou 在中国区日活已超 3 亿，其 2020 年上半年支付的带宽及服务托管开销超过 25.19 亿元，同比增长 110%。除了短视频，直播行业的发展也异常快速。以 Taobao 为典型例子的电商带货直播，其顶流在双十一活动期间创造了过亿的在线用户数，Twitch、Douyu 等直播平台每年也需支付大量带宽使用费用。因此，流媒体为代表的大量应用正在全球范围内流行，而这些保证用户体验的高额带宽费用付给了全球各家*内容**加速*厂商。
 
@@ -41,9 +41,12 @@ TikTok、Youtube、Instagram、Twitch、Netflix 等这类视频、直播类媒�
 
 注意到现已是数百亿美元的市场，并以极快的速度增长。
 
-![图片](https://uploader.shimo.im/f/6lcrZ2tUNGZWCo3F.png!thumbnail)
+![](https://user-images.githubusercontent.com/46369948/135701259-d158fbaa-9952-40be-bada-07ae12692e93.png)
 
-[https://www.t4.ai/industry/cdn-market-share](https://www.t4.ai/industry/cdn-market-share)![图片](https://uploader.shimo.im/f/4uyHfPYGrZNVXOz5.png!thumbnail)
+[https://www.t4.ai/industry/cdn-market-share](https://www.t4.ai/industry/cdn-market-share)
+
+
+![](https://user-images.githubusercontent.com/46369948/135701278-a3d466ba-728c-4a4e-87d2-9bd7914705f7.png)
 
 [https://www.statista.com/statistics/267184/content-delivery-network-internet-traffic-worldwide/](https://www.statista.com/statistics/267184/content-delivery-network-internet-traffic-worldwide/)
 
@@ -100,6 +103,7 @@ Terminal 的核心功能是完成数据缓存、删除和响应服务，并需�
 * hardware configuration
 * index of local cached files
 * shards spot check
+
 ### 传输验证
 
 网络的关键是传输加速，在系统总资源一定的情况下，希望 Terminal 尽可能多的缓存文件，并把访问频率高的文件缓存到离请求方更近的位置。Terminal 启动后会开始缓存文件，在达到一定阈值则需删除访问频率比较低的文件。删除的操作可以由 Terminal 来主动发起，并由调度端做确认回复，也可以由控制端直接调度。控制端在分配缓存任务时，需要知道 Terminal 剩余存储空间及是否有能力来继续缓存文件，以此来优化网络效率。
